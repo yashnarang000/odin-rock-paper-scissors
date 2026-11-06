@@ -94,18 +94,18 @@ function playRound(humanChoice, computerChoice, humanScore, computerScore) {
 */
 
 // how Dwight does it
-function playRound(humanChoice, computerChoice, humanScore, computerScore) {
+function playRound(humanChoice, computerChoice, humanScore, computerScore, resultContainer) {
     humanChoice = humanChoice.toLowerCase();
     computerChoice = computerChoice.toLowerCase();
 
-    alert(`The mortal chose ${humanChoice.toUpperCase()}!`);
+    printOut(resultContainer, `The mortal chose ${humanChoice.toUpperCase()}!`);
 
 
     let human_trinary; // pun on binary (0, 1) = trinary (0, 1, 2)
     let computer_trinary;
 
     if (humanChoice == "love") {
-        alert("Human wins because of the power of love!");
+        printOut(resultContainer, "Human wins because of the power of love!");
         return [1000, 0];
     }
 
@@ -136,18 +136,18 @@ function playRound(humanChoice, computerChoice, humanScore, computerScore) {
     let combination = Number(`${human_trinary}${computer_trinary}`); // using trinary combinations (ex: 0 + 1 = 01)
 
     if (combination == 1 || combination == 12 || combination == 20) {
-        alert(`OH LOOK AT THAT! Computer throws a ${computerChoice.toUpperCase()}! IN YOUR FACE!`)
+        printOut(resultContainer, `OH LOOK AT THAT! Computer throws a ${computerChoice.toUpperCase()}! IN YOUR FACE!`)
         computerScore = computerScore + 1;
     }
 
     else if (combination == 0 || combination == 11 || combination == 22) {
-        alert("Oh, that's a tie...");
+        printOut(resultContainer, "Oh, that's a tie...");
         humanScore = humanScore + 1;
         computerScore = computerScore + 1;
     }
 
     else if (combination == 10 || combination == 21 || combination == 2) {
-        alert(`A ${humanChoice}? That beat computer's ${computerChoice}. Darn it, you mortal!`)
+        printOut(resultContainer, `A ${humanChoice}? That beat computer's ${computerChoice}. Darn it, you mortal!`)
         humanScore = humanScore + 1;
     }
 
@@ -240,21 +240,27 @@ function displayMainMenu(container) {
 }
 
 function printOut(container, stuffToPrint) {
+    container.innerHTML = "";
+
     const printed = document.createElement("h1");
-    printed.textContent(stuffToPrint);
+    printed.textContent = stuffToPrint;
     container.appendChild(printed);
 }
 
-const superContainer = document.querySelector("#container");
+const superContainer = document.querySelector("#super-container");
 displayMainMenu(superContainer);
+
+const resultContainer = document.createElement("div");
+resultContainer.id = "result-container";
+superContainer.appendChild(resultContainer);
 
 function getHumanChoice(event) {
     
     button = event.target;
 
-    humanChose = button.id;
-    computerChose = getComputerChoice().toLowerCase();
-    playRound(humanChose, computerChose, humanScore, computerScore);
+    const humanChose = button.id;
+    const computerChose = getComputerChoice().toLowerCase();
+    playRound(humanChose, computerChose, humanScore, computerScore, resultContainer);
 }
 
-container.addEventListener("click", getHumanChoice);
+superContainer.addEventListener("click", getHumanChoice);
