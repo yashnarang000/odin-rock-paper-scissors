@@ -17,11 +17,6 @@ function getComputerChoice() {
     return computerChoice;
 }
 
-function getHumanChoice() {
-    let humanSays = prompt("What do you choose, mortal? : ")
-    return humanSays;
-}
-
 let humanScore = 0, computerScore = 0;
 
 // method 01: how Jim does it
@@ -210,21 +205,56 @@ function playGame() {
 //     }
 // }
 
-const container = document.querySelector("#container");
+function displayQuestion(container) {
+    const question = document.createElement("h1");
+    question.textContent = "What do you chose, Mortal?";
+    container.appendChild(question);
+}
 
-const rockButton = document.createElement("button");
-rockButton.classList.add("bttn");
-rockButton.style.background = "brown";
-rockButton.textContent = "Rock";
+function displayButtons(container) {
+    const rockButton = document.createElement("button");
+    rockButton.classList.add("bttn");
+    rockButton.style.background = "brown";
+    rockButton.textContent = "Rock";
+    rockButton.id = "rock";
 
-const paperButton = document.createElement("button");
-paperButton.classList.add("bttn");
-paperButton.style.background = "grey";
-paperButton.textContent = "Paper";
+    const paperButton = document.createElement("button");
+    paperButton.classList.add("bttn");
+    paperButton.style.background = "grey";
+    paperButton.textContent = "Paper";
+    paperButton.id = "paper";
 
-const scissorsButton = document.createElement("button");
-scissorsButton.classList.add("bttn");
-scissorsButton.style.background = "#005059";
-scissorsButton.textContent = "Scissors";
+    const scissorsButton = document.createElement("button");
+    scissorsButton.classList.add("bttn");
+    scissorsButton.style.background = "#005059";
+    scissorsButton.textContent = "Scissors";
+    scissorsButton.id = "scissors";
 
-container.append(rockButton, paperButton, scissorsButton);
+    container.append(rockButton, paperButton, scissorsButton);
+}
+
+function displayMainMenu(container) {
+    container.innerHTML = "";
+    displayQuestion(container);
+    displayButtons(container);
+}
+
+function printOut(container, stuffToPrint) {
+    const printed = document.createElement("h1");
+    printed.textContent(stuffToPrint);
+    container.appendChild(printed);
+}
+
+const superContainer = document.querySelector("#container");
+displayMainMenu(superContainer);
+
+function getHumanChoice(event) {
+    
+    button = event.target;
+
+    humanChose = button.id;
+    computerChose = getComputerChoice().toLowerCase();
+    playRound(humanChose, computerChose, humanScore, computerScore);
+}
+
+container.addEventListener("click", getHumanChoice);
