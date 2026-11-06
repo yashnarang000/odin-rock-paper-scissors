@@ -182,28 +182,49 @@ function playGame() {
     return [humanScored, computerScored];
 }
 
-let ifPlayAgain;
+// // Working Main Code:
 
-while (true) {
-    let [finalHumanScore, finalComputerScore] = playGame();
+// let ifPlayAgain;
 
-    alert(`Final score of human is ${finalHumanScore}!\nFinal score of computer is ${finalComputerScore}!`);
+// while (true) {
+//     let [finalHumanScore, finalComputerScore] = playGame();
 
-    if (finalHumanScore > finalComputerScore) {
-        alert("Hail Humans! You win, mortal...");
-    }
+//     alert(`Final score of human is ${finalHumanScore}!\nFinal score of computer is ${finalComputerScore}!`);
 
-    else if (finalComputerScore > finalHumanScore) {
-        alert("Told you, mortal. We computers are unbeatable!");
-    }
+//     if (finalHumanScore > finalComputerScore) {
+//         alert("Hail Humans! You win, mortal...");
+//     }
 
-    else {
-        alert("Nice game mortal. But the game's draw!");
-    }
+//     else if (finalComputerScore > finalHumanScore) {
+//         alert("Told you, mortal. We computers are unbeatable!");
+//     }
 
-    isPlayAgain = confirm("Do you wanna play again, mortal?");
+//     else {
+//         alert("Nice game mortal. But the game's draw!");
+//     }
 
-    if (isPlayAgain == false) {
-        break;
-    }
-}
+//     isPlayAgain = confirm("Do you wanna play again, mortal?");
+
+//     if (isPlayAgain == false) {
+//         break;
+//     }
+// }
+
+const container = document.querySelector("#container");
+
+const rockButton = document.createElement("button");
+rockButton.classList.add("bttn");
+rockButton.style.background = "brown";
+rockButton.textContent = "Rock";
+
+const paperButton = document.createElement("button");
+paperButton.classList.add("bttn");
+paperButton.style.background = "grey";
+paperButton.textContent = "Paper";
+
+const scissorsButton = document.createElement("button");
+scissorsButton.classList.add("bttn");
+scissorsButton.style.background = "#005059";
+scissorsButton.textContent = "Scissors";
+
+container.append(rockButton, paperButton, scissorsButton);
