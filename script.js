@@ -239,20 +239,26 @@ function displayMainMenu(container) {
     displayButtons(container);
 }
 
-function printOut(container, stuffToPrint) {
+function printOut(container, stuffToPrint, priority=1) {
     container.innerHTML = "";
 
-    const printed = document.createElement("h1");
+    const printed = document.createElement(`h${priority}`);
     printed.textContent = stuffToPrint;
     container.appendChild(printed);
 }
 
 const superContainer = document.querySelector("#super-container");
+
 displayMainMenu(superContainer);
 
 const resultContainer = document.createElement("div");
 resultContainer.id = "result-container";
 superContainer.appendChild(resultContainer);
+
+const scoreContainer = document.createElement("div");
+scoreContainer.id = "score-container";
+superContainer.appendChild(scoreContainer);
+
 
 function getHumanChoice(event) {
     
@@ -260,7 +266,11 @@ function getHumanChoice(event) {
 
     const humanChose = button.id;
     const computerChose = getComputerChoice().toLowerCase();
-    playRound(humanChose, computerChose, humanScore, computerScore, resultContainer);
+    [newHumanScore, newComputerScore] = playRound(humanChose, computerChose, humanScore, computerScore, resultContainer);
+    humanScore = newHumanScore;
+    computerScore = newComputerScore;
+
+    printOut(scoreContainer, `Human scored: ${humanScore}\nComputer scored: ${computerScore}`, 3);
 }
 
 superContainer.addEventListener("click", getHumanChoice);
