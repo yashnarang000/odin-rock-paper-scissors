@@ -17,9 +17,7 @@ function getComputerChoice() {
     return computerChoice;
 }
 
-let humanScore = 0, computerScore = 0;
-
-// method 01: how Jim does it
+// method 01: how Jim does it (old code btw - will not work with UI)
 /*
 function playRound(humanChoice, computerChoice, humanScore, computerScore) {
     humanChoice = humanChoice.toLowerCase();
@@ -154,28 +152,29 @@ function playRound(humanChoice, computerChoice, humanScore, computerScore, resul
     return [humanScore, computerScore];
 }
 
-function playGame() {
-    let i = 0;
-    let humanScored = 0;
-    let computerScored = 0;
-    while (i<5) {
-        let humanChose = getHumanChoice();
-        let computerChose = getComputerChoice();
+// // this is an old function - will not work with UI
+// function playGame() {
+//     let i = 0;
+//     let humanScored = 0;
+//     let computerScored = 0;
+//     while (i<5) {
+//         let humanChose = getHumanChoice();
+//         let computerChose = getComputerChoice();
 
-        let [newHumanScore, newComputerScore] = playRound(humanChose, computerChose, humanScored, computerScored);
+//         let [newHumanScore, newComputerScore] = playRound(humanChose, computerChose, humanScored, computerScored);
 
-        humanScored = newHumanScore;
-        computerScored = newComputerScore;
+//         humanScored = newHumanScore;
+//         computerScored = newComputerScore;
         
-        if (humanScored == 1000) {
-            return [humanScored, computerScored];
-        }
+//         if (humanScored == 1000) {
+//             return [humanScored, computerScored];
+//         }
 
-        i=i+1;
-    }
+//         i=i+1;
+//     }
 
-    return [humanScored, computerScored];
-}
+//     return [humanScored, computerScored];
+// }
 
 // // Working Main Code:
 
@@ -186,17 +185,17 @@ function playGame() {
 
 //     alert(`Final score of human is ${finalHumanScore}!\nFinal score of computer is ${finalComputerScore}!`);
 
-//     if (finalHumanScore > finalComputerScore) {
-//         alert("Hail Humans! You win, mortal...");
-//     }
+    // if (finalHumanScore > finalComputerScore) {
+    //     alert("Hail Humans! You win, mortal...");
+    // }
 
-//     else if (finalComputerScore > finalHumanScore) {
-//         alert("Told you, mortal. We computers are unbeatable!");
-//     }
+    // else if (finalComputerScore > finalHumanScore) {
+    //     alert("Told you, mortal. We computers are unbeatable!");
+    // }
 
-//     else {
-//         alert("Nice game mortal. But the game's draw!");
-//     }
+    // else {
+    //     alert("Nice game mortal. But the game's draw!");
+    // }
 
 //     isPlayAgain = confirm("Do you wanna play again, mortal?");
 
@@ -239,38 +238,79 @@ function displayMainMenu(container) {
     displayButtons(container);
 }
 
-function printOut(container, stuffToPrint, priority=1) {
-    container.innerHTML = "";
+function printOut(container, stuffToPrint, priority=1, color="black", clearPrevious=true) {
+    if (clearPrevious == true) {
+        container.innerHTML = "";
+    }
 
     const printed = document.createElement(`h${priority}`);
     printed.textContent = stuffToPrint;
+    printed.setAttribute("style", `color: ${color}`)
     container.appendChild(printed);
+}
+
+function printScore(scoreContainer, humanScore, computerScore) {
+    printOut(scoreContainer, `Human scored: ${humanScore}\nComputer scored: ${computerScore}`, 3);
+}
+
+function playGame(humanChose, computerChose, humanScore, computerScore, resultContainer, scoreContainer, targetScore=5) {
+    
+    if (humanScore < targetScore && computerScore < targetScore) {
+        [humanScore, computerScore] = playRound(humanChose, computerChose, humanScore, computerScore, resultContainer);
+        printScore(scoreContainer, humanScore, computerScore);
+
+        if (humanScore < targetScore - 1 && computerScore < targetScore - 1) {
+            return [humanScore, computerScore];
+        }
+    }
+        
+    finalHumanScore = humanScore;
+    finalComputerScore = computerScore;
+    
+    if (finalHumanScore > finalComputerScore) {
+        printOut(resultContainer, "Hail Humans! You win, mortal...", priority=1, color="red", clearPrevious=false);
+    }
+    
+    else if (finalComputerScore > finalHumanScore) {
+        printOut(resultContainer, "Told you, mortal. We computers are unbeatable!", priority=1, color="blue". clearPrevious=false);
+    }
+    
+    else {
+        printOut(resultContainer, "Nice game mortal. But the game's draw!", priority=1, color="green", clearPrevious=false);
+    }
+    
+    printScore(scoreContainer, humanScore, computerScore);
+    return [finalHumanScore, finalComputerScore];
+
+}
+
+
+function getHumanChoice(event) {
+    button = event.target;
+    
+    humanChose = button.id;
+    computerChose = getComputerChoice();
+    
+    // target score is set to 5
+    [humanScore, computerScore] = playGame(humanChose, computerChose, humanScore, computerScore, resultContainer, scoreContainer, 5);
 }
 
 const superContainer = document.querySelector("#super-container");
 
-displayMainMenu(superContainer);
-
 const resultContainer = document.createElement("div");
 resultContainer.id = "result-container";
-superContainer.appendChild(resultContainer);
 
 const scoreContainer = document.createElement("div");
 scoreContainer.id = "score-container";
+
+
+displayMainMenu(superContainer);
+
+superContainer.appendChild(resultContainer);
 superContainer.appendChild(scoreContainer);
 
-
-function getHumanChoice(event) {
-    
-    button = event.target;
-
-    const humanChose = button.id;
-    const computerChose = getComputerChoice().toLowerCase();
-    [newHumanScore, newComputerScore] = playRound(humanChose, computerChose, humanScore, computerScore, resultContainer);
-    humanScore = newHumanScore;
-    computerScore = newComputerScore;
-
-    printOut(scoreContainer, `Human scored: ${humanScore}\nComputer scored: ${computerScore}`, 3);
-}
+let humanScore = 0, computerScore = 0;
 
 superContainer.addEventListener("click", getHumanChoice);
+
+// to be proceeded later with a stable mind
