@@ -259,29 +259,32 @@ function playGame(humanChose, computerChose, humanScore, computerScore, resultCo
         [humanScore, computerScore] = playRound(humanChose, computerChose, humanScore, computerScore, resultContainer);
         printScore(scoreContainer, humanScore, computerScore);
 
-        if (humanScore < targetScore - 1 && computerScore < targetScore - 1) {
+        if (humanScore < targetScore && computerScore < targetScore) {
             return [humanScore, computerScore];
         }
-    }
-        
-    finalHumanScore = humanScore;
-    finalComputerScore = computerScore;
-    
-    if (finalHumanScore > finalComputerScore) {
-        printOut(resultContainer, "Hail Humans! You win, mortal...", priority=1, color="red", clearPrevious=false);
-    }
-    
-    else if (finalComputerScore > finalHumanScore) {
-        printOut(resultContainer, "Told you, mortal. We computers are unbeatable!", priority=1, color="blue". clearPrevious=false);
-    }
-    
-    else {
-        printOut(resultContainer, "Nice game mortal. But the game's draw!", priority=1, color="green", clearPrevious=false);
-    }
-    
-    printScore(scoreContainer, humanScore, computerScore);
-    return [finalHumanScore, finalComputerScore];
 
+        else {
+
+            finalHumanScore = humanScore;
+            finalComputerScore = computerScore;
+        
+            if (finalHumanScore > finalComputerScore) {
+                printOut(resultContainer, "Hail Humans! You win, mortal...", priority=1, color="red", clearPrevious=false);
+            }
+            
+            else if (finalComputerScore > finalHumanScore) {
+                printOut(resultContainer, "Told you, mortal. We computers are unbeatable!", priority=1, color="blue", clearPrevious=false);
+            }
+            
+            else {
+                printOut(resultContainer, "Nice game mortal. But the game's draw!", priority=1, color="green", clearPrevious=false);
+            }
+        
+            printScore(scoreContainer, humanScore, computerScore);
+            return [finalHumanScore, finalComputerScore];
+
+        }
+    }
 }
 
 
@@ -303,7 +306,6 @@ resultContainer.id = "result-container";
 const scoreContainer = document.createElement("div");
 scoreContainer.id = "score-container";
 
-
 displayMainMenu(superContainer);
 
 superContainer.appendChild(resultContainer);
@@ -313,4 +315,4 @@ let humanScore = 0, computerScore = 0;
 
 superContainer.addEventListener("click", getHumanChoice);
 
-// to be proceeded later with a stable mind
+// processing it with a stable mind
